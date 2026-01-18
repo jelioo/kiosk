@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Smart Kiosk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assistant.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #48f9ff, #e8fcff, #2ddefd);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative; 
+        }
+        
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("589431807_815813444550227_3889086255111213921_n.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.3; 
+            z-index: -1; 
+            pointer-events: none; 
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative; 
+            z-index: 1; 
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .school-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .school-logo {
+            width: 70px;
+            height: 70px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #4ca1af;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 500px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: #4ca1af;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: #3a8a9a;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            margin-top: 10px;
+            flex: 1;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background: #4ca1af;
+        }
+        
+        .nav-menu i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4ca1af;
+        }
+        
+        .event-list, .directory-list {
+            list-style: none;
+        }
+        
+        .event-list li, .directory-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .event-date {
+            background: #4ca1af;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .map-container {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Campus Directory Image Styles */
+        .campus-map-container {
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .campus-map-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .campus-map-image:hover {
+            transform: scale(1.02);
+        }
+
+        .campus-map-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .campus-map-placeholder:hover {
+            transform: scale(1.02);
+        }
+
+        .campus-map-placeholder i {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .campus-map-placeholder span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Modal for enlarged map */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .map-modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+        }
+
+        .close-map-modal {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        
+        /* Tablet Styles (768px - 1024px) */
+        @media screen and (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .search-box {
+                flex: 1;
+                min-width: 200px;
+                margin-bottom: 0;
+            }
+            
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                margin-top: 0;
+                width: 100%;
+            }
+            
+            .nav-menu li {
+                margin-bottom: 0;
+            }
+            
+            .nav-menu a {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .map-modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+            
+            .map-modal-content > div > div {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+        
+        /* Mobile Styles (up to 768px) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            .school-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .school-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 25px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .sidebar {
+                padding: 10px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box input {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .nav-menu {
+                justify-content: center;
+            }
+            
+            .nav-menu a {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .nav-menu a span {
+                display: none;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .welcome-banner {
+                padding: 15px;
+            }
+            
+            .welcome-banner h2 {
+                font-size: 1.2rem;
+            }
+            
+            .welcome-banner p {
+                font-size: 0.85rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .card h3 {
+                font-size: 1rem;
+            }
+            
+            .event-list li, .directory-list li {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+            
+            .campus-map-image {
+                height: 150px;
+            }
+            
+            .campus-map-placeholder {
+                height: 150px;
+            }
+            
+            .map-container {
+                min-height: 250px;
+            }
+            
+            footer {
+                padding: 12px;
+                font-size: 0.75rem;
+            }
+            
+            footer p {
+                margin-bottom: 5px;
+            }
+            
+            .map-modal-content {
+                max-width: 98%;
+                padding: 10px;
+                margin: 10px;
+            }
+            
+            .map-modal-content h3 {
+                font-size: 1rem;
+            }
+            
+            .map-modal-content > div > div {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            
+            .map-modal-content > div > div > div {
+                padding: 15px !important;
+            }
+            
+            .map-modal-content > div > div > div i {
+                font-size: 24px !important;
+            }
+            
+            /* Mini Assistant Button */
+            .mini-assistant {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            /* Assistant Modal Mobile */
+            .assistant-modal .modal-content {
+                width: 95%;
+                max-width: 350px;
+                padding: 15px;
+            }
+            
+            .assistant-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .assistant-btn {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Small Mobile Styles (up to 480px) */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            h1 {
+                font-size: 1.2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .school-logo {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .nav-menu a {
+                padding: 8px 10px;
+            }
+            
+            .welcome-banner h2 {
+                font-size: 1rem;
+            }
+            
+            .welcome-banner p {
+                font-size: 0.75rem;
+            }
+            
+            .card h3 {
+                font-size: 0.95rem;
+            }
+            
+            .event-date {
+                font-size: 0.8rem;
+                padding: 2px 6px;
+            }
+            
+            footer {
+                font-size: 0.7rem;
+            }
+            
+            .campus-map-image {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="school-info">
+                <div class="school-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1>Makati High School</h1>
+                    <p class="subtitle">Smart Kiosk - Enhanced Navigation & Information System</p>
+                </div>
+            </div>
+        </header>  
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search for rooms, people...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>        
+                <ul class="nav-menu">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" onclick="showCampusDirectory()"><i class="fas fa-map-marked-alt"></i> Campus Directory</a></li>
+                    <li><a href="#" onclick="viewEvents()"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                    <li><a href="#"><i class="fas fa-user-friends"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-newspaper"></i> News</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="welcome-banner">
+                    <h2>Welcome to Makati High School</h2>
+                    <p id="date-time-display">Loading...</p>
+                </div>            
+                <div class="card-grid" id="card-grid">
+                    <div class="card" id="events-card">
+                        <h3><i class="fas fa-calendar-day"></i> Today's Events</h3>
+                        <ul class="event-list">
+                            <li><span>Science Fair</span> <span class="event-date">10:00 AM</span></li>
+                            <li><span>Basketball Practice</span> <span class="event-date">3:45 PM</span></li>
+                            <li><span>Parent-Teacher Meeting</span> <span class="event-date">6:00 PM</span></li>
+                        </ul>
+                    </div>
+                    <div class="card" id="announcements-card">
+                        <h3><i class="fas fa-clipboard-list"></i> Announcements</h3>
+                        <ul class="event-list">
+                            <li>Yearbook photos will be taken next week</li>
+                            <li>Library will close early on Friday</li>
+                            <li>New cafeteria menu now available</li>
+                        </ul>
+                    </div>          
+                    <div class="card" id="directory-card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Campus Directory</h3>
+                        <div class="campus-map-container">
+                            <div class="campus-map-placeholder" onclick="openMapModal()">
+                                <i class="fas fa-map"></i>
+                                <span>Click to view Campus Map</span>
+                            </div>
+                        </div>
+                        <ul class="directory-list" style="margin-top: 15px;">
+                            <li><span>Building A</span> <span>Classrooms</span></li>
+                            <li><span>Building B</span> <span>Labs & Library</span></li>
+                            <li><span>Building C</span> <span>Admin Offices</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="map-container" id="map-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>Makati High School Smart Kiosk | Gen. Luna Street Poblacion, Makati City | Principal's Office :
+890-8320 / 890-5938</p>
+            <p>© 2025 Makati High School. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Campus Map Modal -->
+    <div class="map-modal" id="map-modal">
+        <div class="map-modal-content">
+            <h3 style="margin-bottom: 15px; color: #2c3e50;"><i class="fas fa-map-marked-alt"></i> Makati High School Campus Map</h3>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 8px; color: white;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-school" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Building A</strong></p>
+                        <p style="font-size: 12px;">Classrooms<br>Rooms 101-120</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-flask" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Building B</strong></p>
+                        <p style="font-size: 12px;">Science Labs<br>Computer Lab<br>Library</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-building" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Building C</strong></p>
+                        <p style="font-size: 12px;">Admin Offices<br>Principal<br>Registrar</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-basketball-ball" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Gymnasium</strong></p>
+                        <p style="font-size: 12px;">Sports Hall<br>PE Classes</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-utensils" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Cafeteria</strong></p>
+                        <p style="font-size: 12px;">Food Court<br>Canteen</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px;">
+                        <i class="fas fa-tree" style="font-size: 30px; margin-bottom: 10px;"></i>
+                        <p><strong>Quadrangle</strong></p>
+                        <p style="font-size: 12px;">Open Area<br>Events Space</p>
+                    </div>
+                </div>
+            </div>
+            <button class="close-map-modal" onclick="closeMapModal()">Close Map</button>
+        </div>
+    </div>
+
+    <!-- Mini Assistant Button -->
+    <div class="mini-assistant" id="mini-assistant">
+        <i class="fas fa-graduation-cap"></i>
+    </div>
+
+    <!-- Assistant Modal -->
+    <div class="assistant-modal" id="assistant-modal">
+        <div class="modal-content">
+            <h3>School Assistant</h3>
+            <p id="assistant-greeting" class="typing">How can I help you today?</p>
+            <div class="assistant-buttons">
+                <button class="assistant-btn flash" id="navigate-btn" onclick="navigateRooms()"><i class="fas fa-route"></i> Navigate Rooms</button>
+                <button class="assistant-btn flash" id="events-btn" onclick="viewEvents()"><i class="fas fa-calendar-day"></i> View Events</button>
+                <button class="assistant-btn flash" id="announcements-btn" onclick="readAnnouncements()"><i class="fas fa-clipboard-list"></i> Read Announcements</button>
+                <button class="assistant-btn" onclick="getDirections()"><i class="fas fa-directions"></i> Get Directions</button>
+                <button class="assistant-btn" onclick="callSchool()"><i class="fas fa-phone"></i> Call School</button>
+                <button class="assistant-btn" onclick="showDirectory()"><i class="fas fa-users"></i> Staff Directory</button>
+            </div>
+            <button class="close-modal" id="close-modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Date/Time Script -->
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Manila',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const philippineTime = new Intl.DateTimeFormat('en-US', options).format(now);
+            document.getElementById('date-time-display').textContent = 'Current Philippine Time: ' + philippineTime;
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+
+    <!-- Google Maps Script -->
+    <script>
+        function initMap() {
+            var schoolLocation = { lat: 14.5547, lng: 121.0244 };
+            
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: schoolLocation
+            });
+            
+            var marker = new google.maps.Marker({
+                position: schoolLocation,
+                map: map,
+                title: 'Makati High School'
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4H_hs4kAJoPK5cWFjTriBiEUf1clVuFs&callback=initMap"></script>
+
+    <!-- Assistant Modal Functions -->
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const miniAssistant = document.getElementById('mini-assistant');
+            const assistantModal = document.getElementById('assistant-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+
+            // Open modal when clicking the mini assistant button
+            miniAssistant.addEventListener('click', function() {
+                assistantModal.style.display = 'flex';
+            });
+
+            // Close modal when clicking the close button
+            closeModalBtn.addEventListener('click', function() {
+                assistantModal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside the modal content
+            assistantModal.addEventListener('click', function(e) {
+                if (e.target === assistantModal) {
+                    assistantModal.style.display = 'none';
+                }
+            });
+        });
+
+        // Open Campus Map Modal
+        function openMapModal() {
+            document.getElementById('map-modal').style.display = 'flex';
+        }
+
+        // Close Campus Map Modal
+        function closeMapModal() {
+            document.getElementById('map-modal').style.display = 'none';
+        }
+
+        // Close map modal when clicking outside
+        document.getElementById('map-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMapModal();
+            }
+        });
+
+        // Show Campus Directory function
+        function showCampusDirectory() {
+            openMapModal();
+        }
+
+        // Navigate Rooms function
+        function navigateRooms() {
+            const cardGrid = document.getElementById('card-grid');
+            cardGrid.innerHTML = 
+                '<div class="card">' +
+                    '<h3><i class="fas fa-door-open"></i> Room Directory</h3>' +
+                    '<ul class="directory-list">' +
+                        '<li><span>Room 101</span> <span>Principal\'s Office</span></li>' +
+                        '<li><span>Room 102</span> <span>Admin Office</span></li>' +
+                        '<li><span>Room 103</span> <span>Registrar</span></li>' +
+                        '<li><span>Room 201</span> <span>Science Lab</span></li>' +
+                        '<li><span>Room 202</span> <span>Computer Lab</span></li>' +
+                        '<li><span>Room 203</span> <span>Guidance Office</span></li>' +
+                        '<li><span>Room 301</span> <span>Library</span></li>' +
+                        '<li><span>Room 302</span> <span>AVR</span></li>' +
+                    '</ul>' +
+                '</div>';
+            document.getElementById('assistant-modal').style.display = 'none';
+        }
+
+        // View Events function
+        function viewEvents() {
+            const cardGrid = document.getElementById('card-grid');
+            cardGrid.innerHTML = 
+                '<div class="card">' +
+                    '<h3><i class="fas fa-calendar-day"></i> Upcoming Events</h3>' +
+                    '<ul class="event-list">' +
+                        '<li><span>Science Fair</span> <span class="event-date">Today 10:00 AM</span></li>' +
+                        '<li><span>Basketball Practice</span> <span class="event-date">Today 3:45 PM</span></li>' +
+                        '<li><span>Parent-Teacher Meeting</span> <span class="event-date">Today 6:00 PM</span></li>' +
+                        '<li><span>Math Competition</span> <span class="event-date">Dec 5, 9:00 AM</span></li>' +
+                        '<li><span>Christmas Program</span> <span class="event-date">Dec 15, 1:00 PM</span></li>' +
+                        '<li><span>Graduation Ceremony</span> <span class="event-date">Mar 25, 2:00 PM</span></li>' +
+                    '</ul>' +
+                '</div>';
+            document.getElementById('assistant-modal').style.display = 'none';
+        }
+
+
+        function readAnnouncements() {
+            const cardGrid = document.getElementById('card-grid');
+            cardGrid.innerHTML = 
+                '<div class="card">' +
+                    '<h3><i class="fas fa-bullhorn"></i> School Announcements</h3>' +
+                    '<ul class="event-list">' +
+                        '<li>Yearbook photos will be taken next week</li>' +
+                        '<li>Library will close early on Friday</li>' +
+                        '<li>New cafeteria menu now available</li>' +
+                        '<li>ID renewal deadline is December 10</li>' +
+                        '<li>Report cards will be distributed on Friday</li>' +
+                        '<li>School will be closed on December 25-January 1</li>' +
+                    '</ul>' +
+                '</div>';
+            document.getElementById('assistant-modal').style.display = 'none';
+        }
+
+
+        function getDirections() {
+            document.getElementById('assistant-modal').style.display = 'none';
+            const mapContainer = document.getElementById('map-container');
+            mapContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        function callSchool() {
+            document.getElementById('assistant-modal').style.display = 'none';
+            alert('School Contact Numbers:\n\nPrincipal\'s Office: 890-8320\nMain Office: 890-5938\n\nYou can call during office hours (7:00 AM - 5:00 PM)');
+        }
+
+        function showDirectory() {
+            const cardGrid = document.getElementById('card-grid');
+            cardGrid.innerHTML = 
+                '<div class="card">' +
+                    '<h3><i class="fas fa-users"></i> Complete Staff Directory</h3>' +
+                    '<ul class="directory-list">' +
+                        '<li><span>Principal\'s Office</span> <span>Room 101</span></li>' +
+                        '<li><span>Vice Principal</span> <span>Room 102</span></li>' +
+                        '<li><span>Guidance Counselor</span> <span>Room 203</span></li>' +
+                        '<li><span>Registrar</span> <span>Room 103</span></li>' +
+                        '<li><span>Nurse\'s Office</span> <span>Room 115</span></li>' +
+                        '<li><span>Main Office</span> <span>Room 100</span></li>' +
+                        '<li><span>Faculty Room</span> <span>2nd Floor</span></li>' +
+                        '<li><span>Security Office</span> <span>Gate 1</span></li>' +
+                    '</ul>' +
+                '</div>';
+            document.getElementById('assistant-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
